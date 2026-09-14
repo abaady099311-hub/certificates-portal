@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة استخراج الشهادة الدراسية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@500;600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#182634; --navy:#12324A; --navy-deep:#0B2233; --teal:#1F6B63;
+    --gold:#B4913F; --gold-soft:#DCC48A; --paper:#FBF8F1; --paper-line:#E4DCC8;
+    --muted:#5C6B78; --danger:#9A3B33;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 600px at 20% -10%, #163A55 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 110%, #0E2A40 0%, transparent 55%),
+      var(--navy-deep);
+    min-height:100vh; font-family:'Tajawal', sans-serif; color:var(--ink);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:48px 16px 80px;
+  }
+  .wrap{width:100%; max-width:640px;}
+  .letterhead{display:flex; align-items:center; gap:14px; padding:0 4px 22px; color:#EDE7D8;}
+  .seal{width:46px;height:46px;border-radius:50%; border:2px solid var(--gold-soft);
+    display:flex;align-items:center;justify-content:center; flex-shrink:0;
+    background:radial-gradient(circle at 35% 30%, #1D4A66, #0F2A3D);}
+  .seal svg{width:22px;height:22px;stroke:var(--gold-soft);}
+  .letterhead-text{line-height:1.5;}
+  .letterhead-text .org{font-family:'Markazi Text', serif; font-size:22px; font-weight:600; color:#F4EFE0;}
+  .letterhead-text .sub{font-size:12.5px; color:#9FB2C0; letter-spacing:.3px;}
+  .card{background:var(--paper); border:1px solid var(--paper-line); border-radius:6px;
+    box-shadow: 0 30px 60px -20px rgba(4,15,25,.55); overflow:hidden;}
+  .card-top{padding:34px 34px 26px; border-bottom:1px solid var(--paper-line);
+    background: linear-gradient(180deg, rgba(180,145,63,.06), transparent 70%); position:relative;}
+  .card-top::after{content:""; position:absolute; right:34px; bottom:0; left:34px; height:1px;
+    background:linear-gradient(90deg, var(--gold-soft), transparent 80%);}
+  h1{font-family:'Markazi Text', serif; font-size:29px; margin:0 0 6px; color:var(--navy); font-weight:700;}
+  .lead{margin:0; color:var(--muted); font-size:14.5px; line-height:1.9; max-width:46ch;}
+  form{padding:30px 34px 8px;}
+  label{display:block; font-size:13.5px; font-weight:700; color:var(--navy); margin-bottom:8px;}
+  .hint{font-weight:400; color:var(--muted); font-size:12.5px;}
+  .field-row{display:flex; gap:10px;}
+  input#civilId{flex:1; font-family:'Tajawal', sans-serif; font-size:18px; letter-spacing:2px;
+    padding:13px 16px; border:1.5px solid #CBBFA0; border-radius:4px; background:#fff;
+    color:var(--ink); outline:none; transition:border-color .15s ease, box-shadow .15s ease;}
+  input#civilId::placeholder{letter-spacing:1px; color:#A9A290; font-weight:400;}
+  input#civilId:focus{border-color:var(--teal); box-shadow:0 0 0 3px rgba(31,107,99,.15);}
+  button#submitBtn{font-family:'Tajawal', sans-serif; font-size:15px; font-weight:700; color:#F6F1E4;
+    background:var(--navy); border:none; border-radius:4px; padding:0 26px; cursor:pointer;
+    transition:background .15s ease, transform .05s ease;}
+  button#submitBtn:hover{background:var(--teal);}
+  button#submitBtn:active{transform:translateY(1px);}
+  button#submitBtn:disabled{background:#9AA6AE; cursor:default;}
+  .error-msg{display:none; margin-top:12px; padding:10px 14px; border-radius:4px;
+    background:#FBEAE8; border:1px solid #E3B9B3; color:var(--danger); font-size:13.5px;}
+  .card-foot{padding:18px 34px 26px; font-size:12px; color:#9AA0A6; text-align:center;}
+  #result{display:none;}
+  .cert{margin:26px 34px 30px; border:1.5px solid var(--gold); border-radius:4px; padding:2px;
+    background:linear-gradient(135deg, var(--gold-soft), var(--gold));}
+  .cert-inner{background:#FFFDF7; border:1px solid #EFE4C6; border-radius:2px; padding:34px 28px;
+    text-align:center; position:relative;}
+  .cert-inner::before, .cert-inner::after{content:""; position:absolute; top:10px; bottom:10px; width:6px;
+    background-image: repeating-linear-gradient(180deg, var(--gold-soft) 0 3px, transparent 3px 8px);}
+  .cert-inner::before{right:10px;} .cert-inner::after{left:10px;}
+  .cert-eyebrow{font-size:12px; color:var(--teal); font-weight:700; letter-spacing:.5px;}
+  .cert-title{font-family:'Markazi Text', serif; font-size:24px; color:var(--navy); margin:6px 0 4px;}
+  .cert-id{color:var(--muted); font-size:13.5px; margin-bottom:22px;}
+  .open-btn{display:inline-flex; align-items:center; gap:8px; font-family:'Tajawal'; font-size:15px;
+    font-weight:700; color:#F6F1E4; background:var(--navy); border:none; border-radius:4px;
+    padding:13px 28px; cursor:pointer; text-decoration:none;}
+  .open-btn:hover{background:var(--teal);}
+  .cert-actions{margin-top:18px;}
+  .btn-ghost{font-family:'Tajawal'; font-size:13.5px; font-weight:700; color:var(--muted);
+    background:transparent; border:1.5px solid #D8D2C0; border-radius:4px; padding:9px 18px; cursor:pointer;}
+  @media (max-width:480px){
+    .card-top, form, .card-foot{padding-left:20px; padding-right:20px;}
+    .cert{margin-left:16px; margin-right:16px;}
+    .field-row{flex-direction:column;}
+    button#submitBtn{padding:13px; width:100%;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="letterhead">
+    <div class="seal">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3l8 4-8 4-8-4 8-4z"></path>
+        <path d="M4 11v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5"></path>
+      </svg>
+    </div>
+    <div class="letterhead-text">
+      <div class="org">بوابة الخدمات التعليمية</div>
+      <div class="sub">استخراج الشهادات الدراسية إلكترونياً</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <h1>استخراج شهادتك الدراسية</h1>
+      <p class="lead">أدخل رقمك المدني في الحقل أدناه، وسيظهر لك رابط شهادتك مباشرة.</p>
+    </div>
+
+    <form id="certForm">
+      <label for="civilId">الرقم المدني</label>
+      <div class="field-row">
+        <input type="text" id="civilId" inputmode="numeric" maxlength="9" placeholder="مثال: 25124275" autocomplete="off">
+        <button type="submit" id="submitBtn">استخراج الشهادة</button>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+    </form>
+
+    <div id="result">
+      <div class="cert">
+        <div class="cert-inner">
+          <div class="cert-eyebrow">تم العثور على الشهادة</div>
+          <div class="cert-title">شهادة الطالب</div>
+          <div class="cert-id" id="outId">الرقم المدني: —</div>
+          <a class="open-btn" id="openLink" href="#" target="_blank" rel="noopener">فتح / تحميل الشهادة</a>
+          <div class="cert-actions">
+            <button type="button" class="btn-ghost" id="newSearchBtn">بحث جديد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">جميع الشهادات محفوظة بشكل آمن على Google Drive</div>
+  </div>
+</div>
+
+<script>
+  const CERT_INDEX = {"23778178": "1g_AegpyEo9FAwwbmvc-Cfyjit89Lkbjw", "24148939": "1KNAcYdnrHUOSKs0gTCTLsPY4noHF0z7o", "23759226": "1f3RaFGkCk2sLUzhW9Mgw4mih-shxoHow", "24055418": "1_HEp2MKyB7fHHcuBxKaN9gd0vBty_QAI", "23768869": "1hK-BrCpLCEBK8MxmcgL0knfHR2SL--d4", "23761437": "1Gb1XeMN5eXxCOPcgFZiJ8XF2bUxjR4Eu", "23407026": "1MNeb5AJJ_E1ymbXr22Zxxu-r5PuthCaA", "23594312": "1XXt_vUZX6zoP-PSBWrZpcHFk5mG6zgia", "139398248": "1xcaPmMUm2pZ3xf9mBQQEsNAFF6jh7YSC", "139824886": "1X4ZqxBD-embis6jON9oJpxPR-_adiA17", "21168502": "1IEW9DP-ddEtx8LEM5EEcfmkX_ZUowj7G", "140568032": "1TID4hZN0FqjioKnKcaJ1u4kkvOMFKfsR", "139863341": "1O60Z7VXD1-iUBMua8q1_hCuFwdb4PmmU", "139553249": "1bgR_Gl7d1pxV2FA3f8l1LH5NZVO1ruHl", "139681372": "161fVcDo-oNweltIADBI7KLFKelP2qfh6", "137611708": "1fCSt9l1aOy1BoSo9os9tMgVEweAAtd5c", "138616546": "19zRes1ugZ8iuk47UZqxqQQwqQvarrFJ6", "137458965": "1ZCe9xLAy0cJC5atJqx1kIWarjtdjjoXk", "137358776": "1CrOJ0_CmHOpGl4i57low-cLkkVm8SbLY", "137538333": "1Ua-rVa3dmDmM_JmEZSiwTe7SeqHA_riF", "137080837": "12IXQ7gnRCfdbol5do0Slp0c-hwY1Fs9J", "136686779": "1fYNJEe6LARk4o9qlqmfM4f_PuBNETchm", "135922253": "1oR60IgncgSG-tFr91V5wbG53FZb22efX", "136872898": "13xdrOfZEuaCe_ch1nC7g1mi9ZBUMmf2a", "135190329": "1xlZquioET-7znFa14yObs4dP2z2kV8H9", "135224579": "1FFpAzFGnRb3WwPDD6QntYwAiho10RUzo", "135590734": "1l-OHSYxM1R084FYRqLRbf43qfLysGpEt", "135651802": "1fmIwMhrDvrKgUA-plxyB4CDuoStTMWLO", "135629647": "1SEV_GmrUeGrsO-wktAQ4_MAkG9ESXQQK", "134818083": "1HaCavtgzMM34PgaAsobMuxtco-rJkRGw", "134896221": "19J-yxA98JLinxUagK3LNj2l_mL8jfk5m", "134696124": "1rP1OLfVR44vHP6XurIkmtXGVmrcRqWLr", "134334137": "16YGKUO2oQ-Qwlg1zn_vgULDYBpwZmc1Q", "134205036": "1YN2WBOO5MYPkGoDN1PsyKHvOOuQShNAe", "134451714": "1ytsYqcmz_bVcgdumNjvn2TIHUStgsVUt", "122801079": "14kJNnEfTdfJwC3pWk8U1f3p3o8lWieXB", "134901226": "1A0RB4-ZsQVECK_dLQP8hxXglRZIC9mUU", "134781314": "1J5NtWW-HqRt-TRSiZWTluAvFzk8sI3wD", "134423945": "147XJy0OWJIV5JTm2924pyyhjDPdS3QxJ", "134833808": "1Juy_FScUrDK-ffXkd0-pmG9w3o2Ta5Ro", "133186043": "1QkWpz9rX0Fm5Z7ZShZY1X2GXvoR1PIth", "134095896": "11uVyo4QuP8AWiHFX6Pd_h5wTLIq-TIJB", "132533212": "1JTXJsNvGwcF2N2EwcZHQOovpr1bTPews", "133916253": "1MebrWZM25uKaG2IWIZ5dTRmjo-bePgUf", "132533245": "1FP1Qz0YJi005UDwmIXQCcNtDdFYefwxU", "133907749": "1o-7suwbpC1nm1K_BR4vJzfoSTeUCmfRq", "133938572": "1PN4iw50i5AW7x1uzwTeaF9Cv430qL6iy", "132502484": "1bMI3mGPrzqpt_POvXgV92MARNpgMF9_c", "132919854": "1xjKxzfZFCt6Ik6Qd8dGZ_8EQuDIIOOn6", "133073459": "1C-NatCHzvcj1WN6cezY3NsZCdUJ0Y1hj", "132014637": "1SHl80mEniyNcfqtlL4aK1Zdz6GaJMoX1", "123996687": "1BzSg8kmVbGeRAJ-9gwkNsDNRV3gsV44g", "127584765": "13B6OJ79FzKVwksT-1AsPLz930rRmvMTz", "121661358": "1ZE9f6okTUZU8KeB0_TvgIR7gu5rrOvel", "122849275": "1PQPIQeZDKSRGprJcNISROypxac4gDg81", "128304892": "1nWcvcNa8vLGk8xGNpJjanwORkviK0KAR", "108766107": "1DQa-Ay8KhPASwQ2g7dUOkYiUwsg0cNBl", "121972803": "1uzE60F_-0lRVCUjDmtj2IbxuZQtbS1pI", "120019193": "1LYpg89cjr85MjPyBnTBPGWb0WY-A_Uxg", "111911341": "1K52wTQiM7LBVAGSzr2i4nfiOhuF-nBjM", "131709702": "1QNcz7bh67VoQS4pjk55QfjFCbR_c2nRB", "115175429": "1xi8txVNky1M1mHhrvSjPGE5-vDwYswXn", "124256474": "1r1ldisg56YTCxm21ibQlcAuaW2OtBTmY", "118905782": "1xnymJJakJBa47_VKbrmrmKfzzodtyWu5", "107921882": "1oYlpKm3GrTYPFLg4VAYRP2KW2P6wxCfP", "106498864": "1YhKn7O9E4Ml9C7qeyriSqA_rFyL9Q1kF", "99851623": "1O08poh_snrsCZBhDrn4x88ez2ZQhbCND", "103528011": "1SjGRtwc0sFjDxx0SLufDAbQdtmIyj3sR", "105536118": "1B_oS2f0bB9R9gqUjeTcQV4Z8rIAzibzn", "97947019": "19xAmUGhIoschsrm78SVn-Rnggza5lGkd", "93906755": "1wK5Hk9iKW_54wQhNa4bcgXF6c_XOO_Bi", "90332448": "19Tmo10n-PNZrV3sg8sQmQU13xN0gJt-g", "89779471": "1KQGEDGSrzVDrlUVm1z0Czj5nBADllyUP", "93339999": "1c-mUkMS_72ESiIRDmGrjPCSgKEemqyri", "34539508": "1QUWWIU2qAOaz34guCMYxQ1TYE04SGwfC", "88635272": "165QixFvebOw3MtF_SSikjn-grQVcqdf-", "89259894": "1oTMFa91FARtH3dWc5NF2FCmYoisput9S", "35349049": "1UfUO2odMTR50tKBahoJMB9POQE5inufS", "88751345": "11P0d3C0hJlAXMV2T4wSp8jqjDzB0PSGE", "32329028": "1dDTYVUE1dG-cEeBdoeyYKF_Fgkrem3MM", "31126375": "1IXZtayOETx22p5oNBwS1HPF-GGr2kxBh", "31367691": "1BG58zI2VuCjJ-iRhX0S7T3jLnJVQus52", "27341972": "1Bpz1ZltoNLtWwEluuFd6gSfHEZjkqQ_C", "29681833": "1yceumZG3JPFskgLlS0EvSoKJy6L_EsLl", "27112269": "1EY8tWeF0rZ0agJjKBse10SPJlieNAkIf", "27075069": "1wbl7FNniODshizkI6Sro6DQgyzJe1nta", "27291336": "1CFnAy4hKr5vG2TzKY9n5g9Xfi-uV0FIY", "26986664": "1Igj7iwgQy3ygXx_ospbXo_peZ7W7NNNL", "26081311": "1a8HaGgW-jTNPfP4Hi-UsDep_9Ps4qghD", "26901323": "1aOkaup-GrQCjWoC-Nrd_GOjZvERzDrCO", "26093927": "1uKHQQ_BZljkEJY9bg3sVzKhlqAL879cX", "26110128": "1Xip3Y4ge7BZFoB99OCIo00NtRaEnl3xH", "26567059": "1N_3Ave55-wMzq95yak_FqorwT8GYp8RA", "26157669": "13Rj-Wk8w-p-xLaLrgWqc4yL-7GHDE2Zk", "26129201": "1rBjqKSX9yZHLqlxX_0bvCAECCAicDG7K", "26096165": "1c_AYvpyGa4Cv9pMhPQOV-_LZhGJhtuRZ", "26116717": "13gaOkecjBteTJCnv8552f9KjLbiuXD8j", "25842198": "17PktcsQGBw9VmG7lCltdrBbHWk_JA_oL", "26455519": "19nW5sBDSia2FUIcg0qFUU1KRp0q14pZj", "26690457": "1EGRbUSuqnWAx8TRF0fBZGZRFOJ5TghNL", "26084252": "1-KlPKl7LYZ-5VXdslPJWAro7BuuGEzD-", "25898518": "1hZgooeduq1TF9XKEBVXixbxAtX_AMCZm", "25907621": "1bUBhA3imL1XXsAkUxrBuzylAcg99TFRt", "25920251": "13N1JD1PdaaqEzSdsZPeTMYLeDZycgG5U", "25902789": "1XdCcUbnH7ep0d2m2l27FmJTqzWgrOIpj", "25811914": "1q2srVPBQJY6AojHL7WAA0wdlazWlxJqZ", "25777763": "1slEItXqq_B8dL5EaRvsUha2P_Zmq8oJW", "25825817": "1qR9h2MZaSdJwXrxZTVmOFEX2jpofyQkF", "25894927": "18yNdZkn1EL-Ay2vY25RjImdiwryaBO0f", "25803682": "1kJND_oek74nNk-TvgnxZ5-RmlRry2MRo", "25803339": "1SehLtBAXWIumVKOvDyalSwWm1ypq2RaD", "25779115": "1plCNVj__iDFKmSqMeEiQe0vXqd4fqLm6", "25781486": "1jSgx4NOjeVdn05eBXaZuXpwl0YRpDbkj", "25764557": "111heu_bp5_OxUCNcvmnbJPIwwZlNHsnR", "25785733": "1fgV21v7zVwtL-GDBCSC9LAuv1aXXyE2k", "25753768": "1OB9vB_FmNcx_DTi5VsC9RoPr60NXYdaH", "25745938": "1mCSzsN0RbhqZc_GsA8NGcudhRWXISmYE", "25746907": "1lo8T6HvmlZ71YMhVP-mubGR68UC-xl-L", "25692986": "1K5HtZc7BLEyr9HqVM4ACCx-jkSRVirea", "25756962": "1M67WnFKQ47nY3aUU7b1zNpzbpT5C-8gl", "25744777": "1rxHZY2T-4vGNHK7d5vIUBpq8wyqDwqc2", "25739855": "1RUNpX-l0HJokku7WKkYpLVyXOZFEQU3-", "25726457": "1Tf_P732uP9P3ukNKkkMn5KrsSnt6oLt0", "25716848": "1nsNQb4GtEDUqIN1_Hgmou-RjxYNSEWIk", "25684204": "1z8KHXF1Qouxx-OCkO8Te_4bw5t9uOTl6", "25706752": "16aSM_6jUD59yY_FbYqZyf04IWe1lCLuM", "25728203": "12Ra1OyPhOEXd80pG_qVvYgGqc2hVXWOD", "25704654": "1sS0cud6b4YTHSa1AG3e34eDpWdCXT-F6", "25691984": "1JH2U6gzl2S-V5J-_Hz2klrnIO6l9jaBu", "25729646": "1cBqbzvE3pjZ4iwp-Zk5Qu8IyVeScf_B5", "25637868": "1N1nhnbhjMT1BAAxXbxub-mDnvsD_mZ82", "25647393": "15mNwZ3Zxmr2FzTJb_tnLwYpUvXSYJgKK", "25626549": "1HTZL6hEIGgNifv3V9g1A6Lk3rbflOcpF", "25623149": "1Tfx4R9CSjnbMMGqW2EMYW6iUGuMzskYE", "25586127": "1Ze80rmHi-tsTsbnaJyBZ12TXZZLroBWu", "25623281": "1RwcxVKpyIUjjdyUw5GnXyO_9MNPxNdhI", "25662753": "1eCQyo2qu6TFnzy_u3D9kyuED6O27_OfV", "25604746": "1z8Cg5uesIztel2Q0FzClnxKD2jFaQKBm", "25577277": "1PyyQOppAQpqJyBi2wQe6i1FH1KhfzZjW", "25559421": "1Yr5lrgCqMLtpNeYZOa1L4DiIPcsHjmbJ", "25547152": "1e6RpRtSFELRrAsni5vsQ17ql-S4e_f6z", "25575605": "1Rpl3RKVT346Z_rWcD1P6U5wd1RvTqYC2", "25621075": "1jEp4Q26GOAgFH9ealuNZVLBzlUimFyBn", "25560274": "1PuivMcq9sFc2XUgepcaIhhjbi0p6bvDy", "25556495": "1awQ9MV2tE2uermcVsMr07tmWcjdMcW0L", "25535956": "1TciSobTOHhorQPrW7PrQ-4e4pI9Xdt2y", "25538231": "10-BYnOogo_Eo-eop72gQZOLBRYagYCo4", "25533052": "1yG7Hq22i-f2d-oEL4LdM49S8DoaZ0P7-", "25536958": "1RC3LgsMjZdKMRtyWlZYGFhYx7Vnf07fV", "25559773": "1Kap0Pmm-nYWBSKEHMcbxL65Hr3Qd9gkI", "25546183": "1Uo34GduuvVGevPaxvU9pbSFzmgHjaAyR", "25466833": "1TuJ50eNu6S8dVUf8DH1jFXPd-hhf6Wff", "25525517": "15xTERqDCBbVwATMGNKUGhPQJ0som3seA", "25484145": "1NtW1gfImwupFWeBjQJ79e1rW5MWd__zs", "25478202": "19N6NOm2SGGfh8KfjcMHz57yhzNz8wW26", "25467038": "1ea9XAUW_YQBL3gjlsVdz79_DWNFdOcb6", "25462286": "1xBmsrruZGCEwiQ025eb3CGIzX06YJ0tI", "25499388": "1I_sMfu6pIl-3oeBVMobB4QMqEIxqd3XP", "25458914": "1bCiiNMvrRqavoesZZR87LolB8LGCoDJw", "25517566": "1l5_HoE_knQ9sB76F0xhrSmZteqsrb5RO", "25460666": "183orXdS2UfL8S-SP7TpyOffXwf5a6VAp", "25461392": "1bpFKzaspPV78cRAAHCO3VaYX-zUZnBS3", "25457753": "1RjBzLh_JCJ1sPQ_fMbunqywkbZzOtmPb", "25437757": "1gfYV13eghfihaXpEXuQJtFoAOXoOfKMG", "25443189": "1uY862wroj8GOkDkxBt9JeWcXTbnfARGC", "25453473": "1IPffYEaRblKPvAUVRJmdiIe1wLPRqf6B", "25451389": "1ji3i4TH3MaKLA9wCaW0CXZO458QGPtYB", "25448213": "1qeh2IwFFrgH7N867vTbnR4WHrMNnM_K5", "25436282": "1wg4rEFKcJYLUpUN1CxQVh2I08SVBLKxN", "25430396": "1-C5QZhBupXIlIgDxlJRVW27gzKq_zZWS", "25437387": "1LFhmzVECag3nz85OjFX5bUqkr5Hl0rck", "25410564": "1UojiN5Vv6UkIVobTWSg1LESoyLIKVd6-", "25437246": "1uNd80VxOTw_7amgjKQyWDMmrcgrlO7a3", "25416112": "1MAW7RzGpBtQOZ-Y-ariQ5cGTo5rxj4b0", "25406733": "181Ys8blsAx6zs7bHRQpHaYsTZPZSrs_A", "25420735": "1KIFof3szyKs650c8xFTcEmmqS8BlTngC", "25407121": "1L1EF2GVycqf9WlGB_FaraodflegPp8wz", "25378079": "1oaP-zUomsePD94klLtNeIWryt2Obmqgh", "25407276": "1hncNDnEri6yJ8CVPcz22t_5Yyl3IzzbR", "25407857": "1rPGQRwU19r-rBoU4P-kQakfzxdWixTGX", "25426884": "1Q06n_XsCQOGHeEqwtBA2VlCMACGMYXuh", "25372821": "1H7MlyHwevZg1CqUs-Pwh5yKTYM-RY-9v", "25375213": "1MeFowDu_i82QPZrrADYF8YFJV12MFyP3", "25361624": "1fFwQvHPZC7SUI-YnPL78gCvJFNz-2ZB0", "25358796": "1F6Bc_ZgbWFIihyPlunxI9Wsif7MLGYCm", "25362083": "1ojKUGoX27p-fWEgVv3o_WQBs6Y1-JmA8", "25317071": "1N3iGJlRfKigAj8oy54GryRGc2exQuFWA", "25354872": "1Cvb6d1OeFEBFaCzMa5UFDVfqWqSreLl6", "25351204": "16jdSs4Xtilkp388cF_bKAPq4En2D4j3a", "25371233": "1LAtmGIkOmQ9jgJlpY1g5mvL7rTfdUlpe", "25342035": "1qVWiegyme0jx70l8j0fRp7l8A74u0Rlp", "25281089": "1h8mgm73ntOMCd_lVi8v40w2ltnYyYq8U", "25280795": "1iIN3mqGyeye6jGhL-HjkbI0Qi3LjrKdw", "25286943": "1s3S2BKS-g3a36B2XJxIH-BlRfAOkbysP", "25294932": "1WqFEvK9citssO3yDaBflrZNN36y2_oFa", "25300217": "1JdXPC7U10Uf0Ru8RLv4Rv1z0Xp6dhHiL", "25265026": "1Xy2JV3LYrstFa40sCYJXPeRdI3zAhACs", "25276397": "1YTGa1P0dAQQG8XgVJqPrrfEtBpSKviAR", "25289443": "128Ww22HH7-bC9q0_j7HSv-aoWVabQBKg", "25280884": "1R1eCjd66aG_REwTVVCIJooc0TK7Uw_3a", "25218305": "1o2rLS0-bblh_Dc_ELpQlwiVjDDJ5OaQX", "25239463": "17TKauF4GmMquQfFpErPRX8_pDSh61ixE", "25235286": "1mUjdBafNKgBgrRINkNTXthQgE7_8qcNx", "25261032": "1qc5DEWxHcPWwglwRxeYH6b2Y63KMYxSL", "25229919": "1nJTfU9zkGWfp7cAhQdr4NF8bB_gdWyX7", "25228899": "1MNAR7bUZ9F1ol_TKtBgrdedtY_UnlQs6", "25256092": "1t-4mb443LWIJf3jBloHCHoUEA-Hx6_uf", "25221275": "1PZUC65RP5mGNGTp6yWZZXMT9jWeW7r23", "25124275": "1Mv8gD0BlYyjIFrbK7RNwLOs3h-Bpro6C", "25191338": "134bZdkwR10L6KWrh9GqJPEHOyTPBylct", "25177017": "1XB45mr_up9AIBnUPVU316O66QUfUZ5tA", "25244928": "1rfHYxAM5y6cbaqlQ93qdyX8pMQLqYeun", "25147328": "1ST37tvvmBKag8vNuwNo3IZUQzMuxPwKe", "25171455": "1RHpzyAMwCUxUiUsVXEZcMhtjvNtYMh7S", "25191746": "1Lg7kUovfjiW3lvbj2Fhk92cNytP_HlS6", "25136328": "1IqZDVz8SaYk_2dJrgxSB9WdO1qA9_FVG", "25173107": "1ef_6pPgsHD6VqAUtTpvwuUzMNOidKTaK", "25182066": "1PsD1G88Fc19zEuci1jIRn-VGkCNuUKT7", "25114258": "1xdx5D4cx6ABptN8gFlrpFWJADN3EUn3P", "25086143": "1FjiAV7XfkgNMHN9GwIiqlSURimjat5or", "25171717": "1DqqAIpGFSAc6r5mTK5P7qnPWnwUc10IP", "25118308": "1_8rmT5jAs1y2tf4xxrS7xm1Cne9Zsq9Q", "25070391": "1G-oT_0M4qFu52lQqI7OQpSifKIquNyfy", "25117325": "1ogRfPby13bn9jytZhO9QEkylPTKdDRUS", "25057442": "1GkVZtgRXh1oyAdPuoxYWhATLT2UG9T03", "25012351": "1lYpGvP3BJ13SLlfgPw6A5-zHwV6Xm0K1", "25110372": "1d7fNtnQGJQuznrvFTtd6DTiva3PT2kkv", "24991514": "1x80sL1vaDWoPn6wZ5O3gufCAHLnlorVU", "25020213": "1WgJTRFrdfUrHNYfGrJoeBGaes7LGQvEe", "25040129": "1iYAOPK28J5pm7Jo9-CdtjuUHETcjcGgy", "25006544": "1kNQP0QwcN3eH5rHeALUsQnj89dz3xCw-", "25009982": "1ZtJhzrXUZC-B92GaiSNvgy7mHAZEXCmm", "24997517": "1Md6tg-Te4pSgl06h11x-Vk8pVXbjNMdg", "24995405": "1sCwNWvUJ-ygoCbpZqjIw7-iRi3ojg-32", "24968132": "1iyr2DMl7v1kmCopo8omAtnPWRWCj1fTH", "24951392": "1PjpJ_8FFGLvsvV04yDQdtDL4jMRLvHoT", "24955948": "1HYrfjk9_NiyS67zU7CVQkyxm10gSiRjz", "24911845": "1jWTamI8cl4MS-hRuWgifze9yo3tMVbl-", "24841401": "12uTGtthsyEN1OY0WTJ6sLT9IcRiQ5XBG", "24941994": "1LMhN9GzBzl5RcqS45b6bz9hQER05CRws", "24960715": "1GmGs-h2-LNLi5CdSSb6wk0gFfLyO3MzK", "24616546": "1oBeZymJsyydPKocLrmlEXavQpi3vkxgD", "24637417": "1bos5cTJGlhvXx9r5Y8Qmp_T1rfHelReQ", "24812152": "1ImHGxaoY0nW7btYoz601jes_Dn_8bPYb", "24892449": "1rNkuGrlspdpkRCr2Shs77pwFmPXy1onB", "24941989": "1Lielw4b5khXdJCcKvRrojt6tMy4btnAF", "24548022": "1ZfZXpGsshRn9sRX9vhSJ6Rd3bQfHZ0hK", "24507811": "1e1U7XHK-cV3cXbhP7RXjqfXq2biXlcpr", "24622194": "166NiAG9PtPqBgHeRz73zntj0ZrZkQaQP"};
+
+  const form = document.getElementById('certForm');
+  const input = document.getElementById('civilId');
+  const errorMsg = document.getElementById('errorMsg');
+  const result = document.getElementById('result');
+  const submitBtn = document.getElementById('submitBtn');
+  const openLink = document.getElementById('openLink');
+
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/[^0-9]/g, '').slice(0, 9);
+  });
+
+  document.getElementById('newSearchBtn').addEventListener('click', () => {
+    result.style.display = 'none';
+    input.value = '';
+    input.focus();
+    errorMsg.style.display = 'none';
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    const id = input.value.trim();
+
+    if (id.length < 6) {
+      errorMsg.textContent = 'الرجاء إدخال رقم مدني صحيح.';
+      errorMsg.style.display = 'block';
+      result.style.display = 'none';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جارِ البحث…';
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'استخراج الشهادة';
+
+      const fileId = CERT_INDEX[id];
+      if (!fileId) {
+        errorMsg.textContent = 'لم يتم العثور على شهادة مرتبطة بهذا الرقم المدني. تأكد من الرقم وحاول مجدداً.';
+        errorMsg.style.display = 'block';
+        result.style.display = 'none';
+        return;
+      }
+
+      document.getElementById('outId').textContent = 'الرقم المدني: ' + id;
+      openLink.href = 'https://drive.google.com/file/d/' + fileId + '/view';
+      result.style.display = 'block';
+      result.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 400);
+  });
+</script>
+</body>
+</html>
